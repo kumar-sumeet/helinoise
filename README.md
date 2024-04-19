@@ -6,6 +6,7 @@ This toolchain was created to use rotorcraft blade forces obtained from an aerom
 In addition to the data wrangling necessary for data manipulation and generation of compliant files for analysis, this tool has the flexibility to generate structured discretization of the blade surfaces based on blade definition provided within a formatted .yml file. This is necessary because rotorcraft comprehensive analysis tools, and CAMRAD II (CII) in particular, use a 1D representation of the rotor blade for both structural and aerodynamic analysis. As a result, an external open source tool [SONATA](https://gitlab.lrz.de/HTMWTUM/SONATA) is employed to generate this discretization. 
 To take complete advantage of the toolchain to analyse rotors and their acoustic emissions proprietary softwares CII and PSU-WOPWOP are required. In the absence of CII, results from other rotor aeromechanical tools can be used but the results need to be organised in a similar format (check Python pickle file [sample_CII_output_data_dict.p](sample_CII_output_data_dict.p)).
 
+<img src="https://github.com/kumar-sumeet/helinoise/assets/74828659/4e981212-81cb-4cba-88e3-051d714555d4" align="middle" width="500" >
 
 ## Comments
 
