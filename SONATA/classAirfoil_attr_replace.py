@@ -86,7 +86,8 @@ def gen_wopwop_dist(self,dist_curvature,surfaces_lst,fishbac_coordinates=None, n
         if not nbpoints:
             pnts2d, vecs2d = uniformdeflection_on_BSplineLst(BSplineLst, dist_curvature)    
         else:
-            pnts2d, vecs2d = equidistant_D1_on_BSplineLst(BSplineLst, dist_points[surf])  
+            # pnts2d, vecs2d = equidistant_D1_on_BSplineLst(BSplineLst, dist_points[surf])  
+            pnts2d, vecs2d = equidistant_D1_on_BSplineLst(BSplineLst, dist_points[surf],surf)  
         BSplinelst2d_dict[surf] = BSplineLst
         pnts2d_dict[surf] = pnts2d
         vecs2d_dict[surf] = vecs2d
