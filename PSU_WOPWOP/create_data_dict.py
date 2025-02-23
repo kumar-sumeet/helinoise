@@ -91,7 +91,8 @@ def patchfile(patchdata_input_dict,node_pos_arr_dict,norm_pos_arr_dict,time_step
         patchfile_all_data_dict['header info']['time steps or keys']=patchdata_input_dict[time_steps_or_keys]
     
     elif patchdata_input_dict['periodicity']==3:
-        print("patchdata_input_dict['periodicity']==3   functionality is a work in progress")
+        patchfile_all_data_dict['header info']['number of time steps']=patchdata_input_dict['number of time steps']
+        patchfile_all_data_dict['header info']['time steps or keys']=patchdata_input_dict[time_steps_or_keys]
             
     return patchfile_all_data_dict
 
@@ -176,6 +177,7 @@ def funcdatafile(funcdatafile_input_dict,loading_dict,time_steps_or_keys):
         
     elif funcdatafile_input_dict['periodicity']==3:
         funcdatafile_all_data_dict['header info']['number of time steps']=funcdatafile_input_dict['number of time steps']
+        funcdatafile_all_data_dict['header info']['time steps or keys']=funcdatafile_input_dict[time_steps_or_keys]
         #not tested
            
     return funcdatafile_all_data_dict

@@ -102,7 +102,7 @@ def patchfile(filepath_to_patchfile,size_check=False):
                            'single precision/double precision','iblank','future use']
     
         for index,(dt,s) in enumerate(zip(data_type,size)):  
-            pointer_loc,patchfile_all_data_dict['data upto format string'][infotext_for_textfile[index]]=data_extract_func(f_read,pointer_loc,s,dt)
+            pointer_loc,patchfile_all_data_dict['data upto format string'][infotext_for_textfile[index]]=data_extract_func(f_read,pointer_loc,s,dt)    #patch name
     
         #############################################        
         ####    Extracting header information    ####
@@ -125,12 +125,8 @@ def patchfile(filepath_to_patchfile,size_check=False):
                 patchfile_all_data_dict['header info']['number of time steps']=no_t_steps              
                 
             elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
-                # pointer_loc,t_period=data_extract_func(f_read,pointer_loc,4,'float')                  #time period
-                # patchfile_all_data_dict['header info']['time period']=t_period
-                # pointer_loc,no_t_steps=data_extract_func(f_read,pointer_loc,4,'int')                  #time steps
-                # patchfile_all_data_dict['header info']['number of time steps']=no_t_steps              
-                print('Functionality corresponding to patchfile_all_data_dict[data upto format string][constant/periodic/aperiodic/mtf]=3 has not been created yet')
-                sys.exit()
+                pointer_loc,no_t_steps=data_extract_func(f_read,pointer_loc,4,'int')                  #time steps
+                patchfile_all_data_dict['header info']['number of time steps']=no_t_steps              
         
             elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==4:
                 print('Functionality corresponding to patchfile_all_data_dict[data upto format string][constant/periodic/aperiodic/mtf]=4 has not been created yet')
@@ -148,7 +144,8 @@ def patchfile(filepath_to_patchfile,size_check=False):
         while True:
                      
             #read the time_step_or_key info and move pointer_loc back since iteration happens in the loop below as well
-            if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
+            if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or \
+               patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
                 pointer_loc,time_step_or_key=data_extract_func(f_read,pointer_loc,4,'float')
                 patchfile_all_data_dict['header info']['time steps or keys'].append(time_step_or_key)
                 pointer_loc=pointer_loc-4   
@@ -156,7 +153,8 @@ def patchfile(filepath_to_patchfile,size_check=False):
             for idx,patch_name in enumerate(patchfile_all_data_dict['header info']['patch names']):
     
                 #read the time_step_or_key info but don't do anything about it
-                if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
+                if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or \
+                   patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
                     pointer_loc,time_step_or_key=data_extract_func(f_read,pointer_loc,4,'float')
                 
                 #do this for the first time_step_or_key only
@@ -164,7 +162,8 @@ def patchfile(filepath_to_patchfile,size_check=False):
                     patchfile_all_data_dict['zones data'][patch_name]={}
                 
                 #getting the number of nodes or nomrals vectors
-                if patchfile_all_data_dict['data upto format string']['normal vectors node-centered/face-centered']==2:    #not sure about this (this seems to be true only for unstructured example formats provided in the manual)               
+                if patchfile_all_data_dict['data upto format string']['normal vectors node-centered/face-centered']==2 or \
+                   patchfile_all_data_dict['data upto format string']['normal vectors node-centered/face-centered']==3:    #not sure about this (this seems to be true only for unstructured example formats provided in the manual)               
                     num_node_vecs=patchfile_all_data_dict['header info']['grid size'][idx][0]
                     num_norm_vecs=patchfile_all_data_dict['header info']['grid size'][idx][1]
                 else:                                   
@@ -172,12 +171,12 @@ def patchfile(filepath_to_patchfile,size_check=False):
                     num_norm_vecs=num_node_vecs                
                 
                 #iterating through the number of nodes along each direction
-                for direction in coordinates:                                                             #extracting node data       
+                for direction in coordinates:                                                            #extracting node data       
                     node_lst_name = patch_name+' '+direction+' node data' 
                     if node_lst_name in patchfile_all_data_dict['zones data'][patch_name]:
                         pass
                     else:
-                        patchfile_all_data_dict['zones data'][patch_name][node_lst_name]=[]                          #create this list only for first time step
+                        patchfile_all_data_dict['zones data'][patch_name][node_lst_name]=[]              #create this list only for first time step
                     node_lst = []
                     for _ in range(num_node_vecs):
                         pointer_loc,node_coord_val=data_extract_func(f_read,pointer_loc,4,'float')       #extracting node data along 'direction' corrdinate grid point by grid point
@@ -206,7 +205,8 @@ def patchfile(filepath_to_patchfile,size_check=False):
             if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==1:
                 break   #breaks the while loop after just reading one set of data
                 
-            if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
+            if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or \
+               patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
                 if len(patchfile_all_data_dict['header info']['time steps or keys'])<patchfile_all_data_dict['header info']['number of time steps']:        #just checking for the last patch from the iteration above (so assumes that all the patches have same number of time steps)
                     continue
                 else:
@@ -217,13 +217,13 @@ def patchfile(filepath_to_patchfile,size_check=False):
     ####    Checking if there is additional binary text left in the binary file to convert    ####
     ##############################################################################################
     if size_check:
-        print('pointer location till where patchfile data was read--------------------->' ,pointer_loc)
+        print('bin_to_dict: pointer location till where patchfile data was read--------------------->' ,pointer_loc)
         with open(filepath_to_patchfile,'rb') as f_check:
             for _ in f_check: pass            
             pointer_loc_check=f_check.tell()
-        print('pointer location till where patchfile data is available----------------->' ,pointer_loc_check)
+        print('bin_to_dict: pointer location till where patchfile data is available----------------->' ,pointer_loc_check)
         #secondary check
-        print('binary file size (secondary check) ------------------------------------->',os.stat(filepath_to_patchfile).st_size)
+        print('bin_to_dict: binary file size (secondary check) ------------------------------------->',os.stat(filepath_to_patchfile).st_size)
                
     return patchfile_all_data_dict
 
@@ -417,11 +417,26 @@ def funcdatafile(filepath_to_funcdatafile,num_patchdata_zones,size_check=False):
     ####    Checking if there is additional binary text left in the binary file to convert    ####
     ##############################################################################################
     if size_check:
-        print('pointer location till where functional datafile data was read----------------->' ,pointer_loc)
+        print('bin_to_dict: pointer location till where functional datafile data was read----------------->' ,pointer_loc)
         with open(filepath_to_funcdatafile,'rb') as f_check:
             for _ in f_check: pass            
             pointer_loc_check=f_check.tell()
-        print('pointer location till where functional datafile data is available------------->' ,pointer_loc_check)    
-        print('file size (secondary check) -------------------------------------------------->',os.stat(filepath_to_funcdatafile).st_size)    #secondary check
+        print('bin_to_dict: pointer location till where functional datafile data is available------------->' ,pointer_loc_check)    
+        print('bin_to_dict: file size (secondary check) -------------------------------------------------->',os.stat(filepath_to_funcdatafile).st_size)    #secondary check
 
     return funcdatafile_all_data_dict
+
+if __name__ == "__main__":     
+    
+    num_patchdata_zones = 5
+    func_filename = '1994_Run15_5_hover_FishBAC_PetersUnsteady_BladePrecone(rotating)_funcdataBlade1_aperiodic.dat'
+    patch_filename = '1994_Run15_5_hover_FishBAC_PetersUnsteady_BladePrecone(rotating)_patchdataBlade1_aperiodic.dat'
+    # directry = '/home/HT/ge56beh/Work/Python/HeliNoise/Data/Diss_runs/2_simple_hemisphere_aperiodic/1994_Run15_5_hover_FishBAC_PetersUnsteady/1994_Run15_5_hover_FishBAC_PetersUnsteady/blade_data'
+    directry = '/home/HT/ge56beh/Work/Python/HeliNoise/Data/Diss_runs/1_simple_aperiodic/1994_Run15_5_hover_FishBAC_PetersUnsteady/1994_Run15_5_hover_FishBAC_PetersUnsteady/blade_data'
+
+    patchfile_all_data_dict = patchfile(f'{directry}/{patch_filename}')
+    funcfile_all_data_dict = funcdatafile(f'{directry}/{func_filename}',num_patchdata_zones)
+    
+    
+    
+    
