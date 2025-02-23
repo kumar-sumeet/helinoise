@@ -1,0 +1,151 @@
+&EnvironmentIn
+	nbContainer = 1
+	nbObserverContainers=1
+	ASCIIOutputFlag=.true.
+	OASPLdBFlag = .true.
+	OASPLdBAFlag = .true.
+	spectrumFlag = .true.
+	SPLdBFlag = .true.
+	SPLdBAFlag = .true.
+	acousticPressureFlag=.true.
+	pressureGradient1AFlag = .true.  
+	pressureFileName = 'mic7_pressure'  
+	SPLFileName = 'mic7_spl'  
+	OASPLFileName = 'mic7_OASPL'  
+!!!!!!!!!!!!    Output flags    !!!!!!!!!!!!
+	thicknessNoiseFlag=.true.
+	loadingNoiseFlag=.true.
+	totalNoiseFlag=.true.
+	!audioFlag = .true
+!!!!!!!!!!!!    Sigma surface flags    !!!!!!!!!!!!
+	debugLevel = 1 
+	sigmaFlag = .true.
+	loadingNoiseSigmaFlag = .true
+	thicknessNoiseSigmaFlag = .true
+	totalNoiseSigmaFlag = .true
+	machSigmaFlag = .true.
+	observerSigmaFlag = .true.
+	velocitySigmaFlag = .true.
+	areaSigmaFlag = .true.
+	MdotrSigmaFlag = .true.
+	normalSigmaFlag=.true.
+/
+ &EnvironmentConstants 
+	rho=   1.225    
+	c=340.2626
+/
+&ObserverIn
+	nt   = 8192			
+	xloc = -5.0
+	yloc = -2.7
+	zloc = -4.304
+!	highPassFrequency = 150
+!	lowPassFrequency = 1500
+	tMin = 0.141179312                !observer time beginning
+	tMax = 0.282358625                !observer time ends 
+	attachedTo = ”bo105” 				
+/
+&ContainerIn 
+	Title  = ”bo105”
+	nbContainer = 1
+	dtau =0.0002614431715
+	nbBase = 1
+/
+	&CB
+		Title="Forward velocity"
+		TranslationType="KnownFunction"
+		VH = -22.27,0.0,0.0 
+	/
+	&ContainerIn
+	  title   = 'Main Rotor'
+	  nbContainer = 1
+	  nbBase  = 2   
+	/
+		&CB
+		  Title          = 'Shaft tilt'
+		  AxisType       = 'TimeIndependent'
+		  TranslationType= 'TimeIndependent'
+		  AngleType      = 'TimeIndependent'
+		  axisvalue      = 0.,1.,0.
+		  anglevalue     = 0.006981317         
+		/ 
+		&CB
+			Title          = 'Rotor 1 Rotation'
+			rotation       = .true.
+			angletype      = 'KnownFunction'
+			omega          =  44.505
+			axisvalue      = 0.,0.,1.,
+		/  
+			&ContainerIn
+			  title            = 'Main Rotor Blade 1'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade1_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade1_periodic.dat'
+			  nbBase  = 2   
+			/
+				 &CB
+				   Title="Constant rotation"
+				   AngleType="TimeIndependent"
+				   AngleValue=  -1.570796327    
+				   AxisValue=0.0,0.0,1.0
+				  /
+				 &CB
+				   Title="Precone"
+				   AngleType="TimeIndependent"
+				   AngleValue=  0.043633231   
+				   AxisValue=1.0,0.0,0.0
+				  /
+			&ContainerIn
+			  title            = 'Main Rotor Blade 2'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade2_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade2_periodic.dat'
+			  nbBase=2
+			/
+				 &CB
+				   Title="Constant rotation"
+				   AngleType="TimeIndependent"
+				   AngleValue=  0.0    
+				   AxisValue=0.0,0.0,1.0
+				  /
+				 &CB
+				   Title="Precone"
+				   AngleType="TimeIndependent"
+				   AngleValue=  0.043633231   
+				   AxisValue=1.0,0.0,0.0
+				  /
+			&ContainerIn
+			  title            = 'Main Rotor Blade 3'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade3_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade3_periodic.dat'
+			  nbBase=2
+			/
+				 &CB
+				   Title="Constant rotation"
+				   AngleType="TimeIndependent"
+				   AngleValue=  1.570796327    
+				   AxisValue=0.0,0.0,1.0
+				 /
+				 &CB
+				   Title="Precone"
+				   AngleType="TimeIndependent"
+				   AngleValue=  0.043633231   
+				   AxisValue=1.0,0.0,0.0
+				  /
+			&ContainerIn
+			  title            = 'Main Rotor Blade 4'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade4_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade4_periodic.dat'
+			  nbBase=2
+			/
+				 &CB
+				   Title="Constant rotation"
+				   AngleType="TimeIndependent"
+				   AngleValue=  3.141592654  
+				   AxisValue=0.0,0.0,1.0
+				 /
+				 &CB
+				   Title="Precone"
+				   AngleType="TimeIndependent"
+				   AngleValue=  0.043633231   
+				   AxisValue=1.0,0.0,0.0
+				  /
+
