@@ -1,16 +1,16 @@
 # HeliNoise
 
-*Post-processing interface between CAMRAD II and TAU (under progress), and PSU-WOPWOP* 
+*Pre- and post-processing interface between CAMRAD II, Dymore, and PSU-WOPWOP* 
 
-This toolchain was created to use rotorcraft blade forces obtained from an aeromechanical comprehensive analysis ([CAMRAD II](http://www.camrad.com/CAMRADII.html)) and predict the corresponding rotor aeroacoustics using Ffowcs Williams-Hawkings equation-based solver ([PSU-WOPWOP](https://arc.aiaa.org/doi/10.2514/6.2007-1240)).  
-In addition to the data wrangling necessary for data manipulation and generation of compliant files for analysis, this tool has the flexibility to generate structured discretization of the blade surfaces based on blade definition provided within a formatted .yml file. This is necessary because rotorcraft comprehensive analysis tools, and CAMRAD II (CII) in particular, use a 1D representation of the rotor blade for both structural and aerodynamic analysis. As a result, an external open source tool [SONATA](https://gitlab.lrz.de/HTMWTUM/SONATA) is employed to generate this discretization. 
-To take complete advantage of the toolchain to analyse rotors and their acoustic emissions proprietary softwares CII and PSU-WOPWOP are required. In the absence of CII, results from other rotor aeromechanical tools can be used but the results need to be organised in a similar format (check Python pickle file [sample_CII_output_data_dict.p](sample_CII_output_data_dict.p)).
+This toolchain was created to use rotorcraft blade forces obtained from an aeromechanical comprehensive analysis ([CAMRAD II](http://www.camrad.com/CAMRADII.html) or Dymore) and predict the corresponding rotor aeroacoustics using Ffowcs Williams-Hawkings equation-based solver ([PSU-WOPWOP](https://arc.aiaa.org/doi/10.2514/6.2007-1240)).  
+In addition to the data wrangling necessary for data manipulation and generation of compliant files for analysis, this tool has the flexibility to generate structured discretization of the blade surfaces based on blade definition provided within a formatted .yml file. This is necessary because rotorcraft comprehensive analysis tools, use a 1D representation of the rotor blade for both structural and aerodynamic analysis. As a result, an external open source tool [SONATA](https://gitlab.lrz.de/HTMWTUM/SONATA) is employed to generate this discretization. 
+To take complete advantage of the toolchain to analyse rotors and their acoustic emissions proprietary softwares CII and PSU-WOPWOP are required. The (semi) open-source code Dymore can be obtained by contacting Prof Olivier Bauchau of the Univ. of Maryland. In the absence of CII or Dymore, results from other rotor aeromechanical tools can be used but the results need to be organised in a similar format (check Python pickle files [sample_CII_output_data_dict.p](sample_CII_output_data_dict.p) and [sample_dymore_lowspeed_run_case.p](Data/Diss_runs/bo105_complex/1994_Run42_7_baseline_trimwithrcvs/1994_Run42_7_baseline_trimwithrcvs/1994_Run42_7_baseline_trimwithrcvs.p), respectively).
 
 <img src="https://github.com/kumar-sumeet/helinoise/assets/74828659/4e981212-81cb-4cba-88e3-051d714555d4" align="middle" width="500" >
 
 ## Comments
 
-CII solution output file contains all the relevant info to generate the deformed/undeformed shape of the elastic lifting surfaces (except chordwise cross-section data) over the entire time period. The *.yml input file provided contains the missing chordwise cross-section info provided as the blade cross-section airfoil coordinates or just the airfoil name (and the relevant coordinates are imported automatically). Additionally, some redundant info already available in the CII output file is also provided. The redundancy is due to the already existing construct in SONATA.  
+CII/Dymore solution output file contains all the relevant info to generate the deformed/undeformed shape of the elastic lifting surfaces (except chordwise cross-section data) over the entire time period. The *.yml input file provided contains the missing chordwise cross-section info provided as the blade cross-section airfoil coordinates or just the airfoil name (and the relevant coordinates are imported automatically). Additionally, some redundant info already available in the CII/Dymore output file is also provided. The redundancy is due to the already existing construct in SONATA.  
 
 
 ## Installation
@@ -33,6 +33,7 @@ CII solution output file contains all the relevant info to generate the deformed
 ## Publications:
 
 **Kumar, S., Komp, D., Hajek, M., Rauleder, J.:** [Effect of Active Camber on Rotor Noise, Power and Hub Vibration, AIAA SciTech Forum, Virtual Event, 2021](https://www.researchgate.net/publication/348245919_Effect_of_Active_Camber_on_Rotor_Noise_Power_and_Hub_Vibration)
+
 **Zhang, G., Komp, D., Yavrucuk, I.:** [Fast Prediction of Full-Scale Helicopter Rotor Noise Using Acoustic Modal Analysis, 30th AIAA/CEAS Aeroacoustics Conference, Italy, 2024](https://arc.aiaa.org/doi/abs/10.2514/6.2024-3093)
 
 ## Acknowledgment:
