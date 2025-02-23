@@ -103,29 +103,35 @@ def patchfile(filepath_to_patchfile,patchfile_all_data_dict,size_check=False):
         binfilesize = 1100   #at this point the file size is 1100 bytes    
         ####    writing 'header info' data    ####
         for index,patch_name in enumerate(patchfile_all_data_dict['header info']['patch names']): 
-            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,patch_name,32,'string')    
+            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,patch_name,32,'string')         #patch name
             binfilesize = binfilesize+32
             
             if patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==1:                    
-                dim1=patchfile_all_data_dict['header info']['grid size'][index][0]                    #1st dimension
+                dim1=patchfile_all_data_dict['header info']['grid size'][index][0]                      #1st dimension
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim1,4,'int')                        
-                dim2=patchfile_all_data_dict['header info']['grid size'][index][1]                    #2nd dimension
+                dim2=patchfile_all_data_dict['header info']['grid size'][index][1]                      #2nd dimension
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim2,4,'int')                        
                 binfilesize = binfilesize+4+4
                 
             elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2: 
-                time_period=patchfile_all_data_dict['header info']['time period']              #time period
+                time_period=patchfile_all_data_dict['header info']['time period']                       #time period
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,time_period,4,'float')
-                time_steps=patchfile_all_data_dict['header info']['number of time steps']                #time steps
+                time_steps=patchfile_all_data_dict['header info']['number of time steps']               #number of time steps
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,time_steps,4,'int')
-                dim1=patchfile_all_data_dict['header info']['grid size'][index][0]                    #1st dimension
+                dim1=patchfile_all_data_dict['header info']['grid size'][index][0]                      #1st dimension
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim1,4,'int')                        
-                dim2=patchfile_all_data_dict['header info']['grid size'][index][1]                    #2nd dimension
+                dim2=patchfile_all_data_dict['header info']['grid size'][index][1]                      #2nd dimension
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim2,4,'int')                        
                 binfilesize = binfilesize+4+4+4+4
                 
             elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
-                pass
+                time_steps=patchfile_all_data_dict['header info']['number of time steps']               #number of time steps
+                pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,time_steps,4,'int')
+                dim1=patchfile_all_data_dict['header info']['grid size'][index][0]                      #1st dimension
+                pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim1,4,'int')                        
+                dim2=patchfile_all_data_dict['header info']['grid size'][index][1]                      #2nd dimension
+                pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim2,4,'int')                        
+                binfilesize = binfilesize+4+4+4
         
             elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==4:
                 pass
@@ -138,27 +144,34 @@ def patchfile(filepath_to_patchfile,patchfile_all_data_dict,size_check=False):
                         pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_entry,4,'float')
                         binfilesize = binfilesize+4
     
-        elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2:                 
-             
-                for ts_k_idx,ts_k in enumerate(patchfile_all_data_dict['header info']['time steps or keys']):  #iterating through the number of time steps
-                    
-                    for patch_name in patchfile_all_data_dict['header info']['patch names']:
-                        
-                        pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,ts_k,4,'float')
-                        binfilesize = binfilesize+4
-                        for patch_coord_name,patch_coord_data in patchfile_all_data_dict['zones data'][patch_name].items():
-                            for data_entry in patch_coord_data[ts_k_idx]:    #writing data corresponding to all patch surfaces one time step at a time
-                                pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_entry,4,'float')    
-                                binfilesize = binfilesize+4
+        elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or \
+             patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
+         
+            for ts_k_idx,ts_k in enumerate(patchfile_all_data_dict['header info']['time steps or keys']):  #iterating through the number of time steps
+                for patch_name in patchfile_all_data_dict['header info']['patch names']:
+                    # print(f'############{patch_name}############')
+                    pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,ts_k,4,'float')
+                    binfilesize = binfilesize+4
+                    # print(patchfile_all_data_dict['zones data'].keys())
+                    for patch_coord_name,patch_coord_data in patchfile_all_data_dict['zones data'][patch_name].items():
+                        # print(patch_coord_name,'    ', np.shape(patch_coord_data))
+                        # print(f'ts_k_idx = {ts_k_idx}')
+                        # print(f'patch_coord_data[ts_k_idx] = {patch_coord_data[ts_k_idx]}')
+                        # print(patchfile_all_data_dict['header info']['time steps or keys'])
+                        for data_entry in patch_coord_data[ts_k_idx]:    #writing data corresponding to all patch surfaces one time step at a time
+                            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_entry,4,'float')    
+                            binfilesize = binfilesize+4
+                            
+
 
     if size_check:
-        print('pointer location till where patchfile binary data was written----------->',pointer_loc)
+        print('dict_to_bin_save_file: pointer location till where patchfile binary data was written----------->',pointer_loc)
     #    size_arr=np.array(size)
     #    binaryfilesize=sum(size_arr)+40*len(patchfile_all_data_dict['header info']['patch names'])
     #    print('expected size of the binary patchfile based on patchfile_all_data_dict-->', )
         #secondary check
-        print('file size (secondary check) -------------------------------------------->',os.stat(filepath_to_patchfile).st_size)
-        print('file size (tertiary check) --------------------------------------------->',binfilesize)
+        print('dict_to_bin_save_file: file size (secondary check) -------------------------------------------->',os.stat(filepath_to_patchfile).st_size)
+        print('dict_to_bin_save_file: file size (tertiary check) --------------------------------------------->',binfilesize)
     # print('patch data converted to binary saved to file!!!!!!!')
 
 ###############################################################################################################################################################
@@ -185,13 +198,14 @@ def funcdatafile(filepath_to_funcdatafile,funcdatafile_all_data_dict,num_patchda
     data_type=['signed-int','signed-int','signed-int','ascii','int','int','int','int','int','int','int','int','int','int']
     size=[4,4,4,1024,4,4,4,4,4,4,4,4,4,4]
 
-    with open(filepath_to_funcdatafile,'wb') as f_write:                              #open file to write in binary format
-        pointer_loc=0                                                              #determines location of the cursor while writing the file (initial value 0 implies it starts writing from the begininng of the file)
-        
+    with open(filepath_to_funcdatafile,'wb') as f_write:                       #open file to write in binary format
+        #determines location of the cursor while writing the file 
+        #(initial value 0 implies it starts writing from the begininng of the file)
+        pointer_loc=0                                                                  
         ####    writing 'data upto format string' data    ####
         for index,key in enumerate(funcdatafile_all_data_dict['data upto format string']):
             data_chunk=funcdatafile_all_data_dict['data upto format string'][key]
-            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_chunk,size[index],data_type[index])    #returns the new pointer location after writing the data to file
+            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_chunk,size[index],data_type[index])#returns the new pointer location after writing the data to file
             
         ####    writing 'zone specification' data    ####
         data_chunk = funcdatafile_all_data_dict['zone specification']['number of zones with data']
@@ -206,7 +220,7 @@ def funcdatafile(filepath_to_funcdatafile,funcdatafile_all_data_dict,num_patchda
     
         ####    writing 'header info' data    ####        
         for index,loading_surface_name in enumerate(funcdatafile_all_data_dict['header info']['patch names']): 
-            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,loading_surface_name,32,'string')    
+            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,loading_surface_name,32,'string')#patch name    
         
             if funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==1:                    
                 dim1=funcdatafile_all_data_dict['header info']['grid size'][index][0]                    #1st dimension
@@ -215,9 +229,9 @@ def funcdatafile(filepath_to_funcdatafile,funcdatafile_all_data_dict,num_patchda
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim2,4,'int')                        
         
             elif funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2: 
-                time_period=funcdatafile_all_data_dict['header info']['time period']              #time period
+                time_period=funcdatafile_all_data_dict['header info']['time period']                     #time period
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,time_period,4,'float')
-                no_time_steps=funcdatafile_all_data_dict['header info']['number of time steps']                #time steps
+                no_time_steps=funcdatafile_all_data_dict['header info']['number of time steps']          #number of time steps
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,no_time_steps,4,'int')
                 dim1=funcdatafile_all_data_dict['header info']['grid size'][index][0]                    #1st dimension
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim1,4,'int')                        
@@ -225,7 +239,12 @@ def funcdatafile(filepath_to_funcdatafile,funcdatafile_all_data_dict,num_patchda
                 pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim2,4,'int')                        
                 
             elif funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
-                pass
+                no_time_steps=funcdatafile_all_data_dict['header info']['number of time steps']          #number of time steps
+                pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,no_time_steps,4,'int')
+                dim1=funcdatafile_all_data_dict['header info']['grid size'][index][0]                    #1st dimension
+                pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim1,4,'int')                        
+                dim2=funcdatafile_all_data_dict['header info']['grid size'][index][1]                    #2nd dimension
+                pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,dim2,4,'int')                        
         
             elif funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==4:
                 pass
@@ -252,24 +271,26 @@ def funcdatafile(filepath_to_funcdatafile,funcdatafile_all_data_dict,num_patchda
                     for data_entry in loading_patch_vector_data[0]:   #only one time step info is available 
                         pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_entry,4,'float')
             
-        elif funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2:        
-            for ts_k_idx,ts_k in enumerate(funcdatafile_all_data_dict['header info']['time steps or keys']):  #iterating through the number of time steps
-                
+        elif funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==2 or \
+             funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:        
+            #iterating through the number of time steps      
+            for ts_k_idx,ts_k in enumerate(funcdatafile_all_data_dict['header info']['time steps or keys']):              
                 
                 for loading_patch_name in funcdatafile_all_data_dict['header info']['patch names']:
-                    pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,ts_k,4,'float')
+                    pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,ts_k,4,'float')               #time step value or key  
                     for loading_patch_vector_name,loading_patch_vector_data in funcdatafile_all_data_dict['zones data'][loading_patch_name].items():
-                        for data_entry in loading_patch_vector_data[ts_k_idx]:    #writing data corresponding to all loading surfaces one time step at a time
-                            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_entry,4,'float')
+                        for data_entry in loading_patch_vector_data[ts_k_idx]:    
+                            #writing data corresponding to all loading surfaces one time step at a time
+                            pointer_loc=chunk_convtobin_writetofile(f_write,pointer_loc,data_entry,4,'float') #loading data
             
      
     if size_check:
-        print('pointer location till where Functional binary data file was written----------->',pointer_loc)
+        print('dict_to_bin_save_file: pointer location till where Functional binary data file was written----------->',pointer_loc)
     #    size_arr=np.array(size)
     #    binaryfilesize=sum(size_arr)+40*len(patchfile_all_data_dict['header info']['patch names'])
     #    print('expected size of the binary patchfile based on patchfile_all_data_dict-->', )
         #secondary check
-        print('file size (secondary check) -------------------------------------------------->',os.stat(filepath_to_funcdatafile).st_size)
+        print('dict_to_bin_save_file: file size (secondary check) -------------------------------------------------->',os.stat(filepath_to_funcdatafile).st_size)
     
     # print('Functional data converted to binary and saved to file!!!!!!!')
 

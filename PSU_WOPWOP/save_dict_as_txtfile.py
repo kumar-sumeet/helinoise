@@ -94,6 +94,28 @@ def patchfile(filepath_to_patchfile,patchfile_all_data_dict):
                             f_write.write(str(data_entry)+'\t')     
                         f_write.write('\n')
                     f_write.write('\n\n')
+                    
+        elif patchfile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
+    
+            add_helpful_header_in_text_file(f_write,'Header Information')
+            for i in range(patchfile_all_data_dict['data upto format string']['number of zones']):    
+                f_write.write(patchfile_all_data_dict['header info']['patch names'][i]+'\t #'+'patch names'+'\n')
+                f_write.write(str(patchfile_all_data_dict['header info']['number of time steps'])+'\t #'+'number of time steps'+'\n')
+                f_write.write(str(patchfile_all_data_dict['header info']['grid size'][i])+'\t #'+'grid size'+'\n')    #zone dimensions written including square brackets
+            
+            add_helpful_header_in_text_file(f_write,'Zones Data')            
+            for ts_k_idx,ts_k in enumerate(patchfile_all_data_dict['header info']['time steps or keys']):  #iterating through the number of time steps
+                for patch_name in patchfile_all_data_dict['header info']['patch names']: 
+                    f_write.write('---------------------'+'\n')
+                    f_write.write(str(ts_k)+'\n')
+                    f_write.write('---------------------'+'\n')
+                    #f_write.write(patch_name+'\n\n')
+                    for patch_coord_name,patch_coord_data in patchfile_all_data_dict['zones data'][patch_name].items():
+                        f_write.write(patch_coord_name+'\n')
+                        for data_entry in patch_coord_data[ts_k_idx]:    #writing data corresponding to all patch surfaces one time step at a time
+                            f_write.write(str(data_entry)+'\t')     
+                        f_write.write('\n')
+                    f_write.write('\n\n')
     print('Patch data file dict has been saved as a text file')
 
 
@@ -114,6 +136,7 @@ def funcdatafile(filepath_to_funcdatafile,funcdatafile_all_data_dict):
     """
     filepath_to_textfile=filepath_to_funcdatafile.split('.dat')[0]+'_text.txt'    #writing text file in same folder as fundatafile
 
+    print('esdklfjasdf')
     with open(filepath_to_textfile,'w') as f_write:
 
         ####    writing 'data upto format string' data    ####
@@ -165,10 +188,41 @@ def funcdatafile(filepath_to_funcdatafile,funcdatafile_all_data_dict):
                     f_write.write('\n\n')
     
         elif funcdatafile_all_data_dict['data upto format string']['constant/periodic/aperiodic/mtf']==3:
-            pass
+            
+            add_helpful_header_in_text_file(f_write,'Header Information')
+            for i in range(funcdatafile_all_data_dict['zone specification']['number of zones with data']):    
+                f_write.write(funcdatafile_all_data_dict['header info']['patch names'][i]+'\t #'+'patch names'+'\n')
+                f_write.write(str(funcdatafile_all_data_dict['header info']['number of time steps'])+'\t #'+'number of time steps'+'\n')
+                f_write.write(str(funcdatafile_all_data_dict['header info']['grid size'][i])+'\t #'+'grid size'+'\n')    #zone dimensions written including square brackets
+            
+            add_helpful_header_in_text_file(f_write,'Zones Data')            
+            for ts_k_idx,ts_k in enumerate(funcdatafile_all_data_dict['header info']['time steps or keys']):  #iterating through the number of time steps
+                for loading_patch_name in funcdatafile_all_data_dict['header info']['patch names']:                
+                    f_write.write('---------------------'+'\n')
+                    f_write.write(str(ts_k)+'\n')
+                    f_write.write('---------------------'+'\n')
+                    for loading_surface_vector_name,loading_surface_vector_data in funcdatafile_all_data_dict['zones data'][loading_patch_name].items():
+                        f_write.write(loading_surface_vector_name+'\n')    #writing the patch name and the quantity being written down below
+                        for data_entry in loading_surface_vector_data[ts_k_idx]:    #writing data corresponding to all loading surfaces one time step at a time
+                            f_write.write(str(data_entry)+'\t')    #writing the data in plot3d format for a particular zone at the above time step
+                        f_write.write('\n')
+                    f_write.write('\n\n')
     
     print('Functional data file dict has been saved as text file')
 
 
 ###########################################################################################################################################
 ###########################################################################################################################################
+if __name__ == "__main__":     
+    
+    num_patchdata_zones = 5
+    func_filename = '1994_Run15_5_hover_FishBAC_PetersUnsteady_BladePrecone(rotating)_funcdataBlade1_aperiodic.dat'
+    patch_filename = '1994_Run15_5_hover_FishBAC_PetersUnsteady_BladePrecone(rotating)_patchdataBlade1_aperiodic.dat'
+    # directry = '/home/HT/ge56beh/Work/Python/HeliNoise/Data/Diss_runs/2_simple_hemisphere_aperiodic/1994_Run15_5_hover_FishBAC_PetersUnsteady/1994_Run15_5_hover_FishBAC_PetersUnsteady/blade_data'
+    directry = '/home/HT/ge56beh/Work/Python/HeliNoise/Data/Diss_runs/1_simple_aperiodic/1994_Run15_5_hover_FishBAC_PetersUnsteady/1994_Run15_5_hover_FishBAC_PetersUnsteady/blade_data'
+
+    import bin_to_dict as bin_to_dict
+    patchfile_all_data_dict = bin_to_dict.patchfile(f'{directry}/{patch_filename}')
+    funcfile_all_data_dict = bin_to_dict.funcdatafile(f'{directry}/{func_filename}',num_patchdata_zones)
+    # patchfile(f'{directry}/{patch_filename}',patchfile_all_data_dict)
+    funcdatafile(f'{directry}/{func_filename}',funcfile_all_data_dict)
