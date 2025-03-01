@@ -26,7 +26,7 @@ CII/Dymore solution output file contains all the relevant info to generate the d
 * **[plot](plot)** contains all plotting routines employed to generate plots [here](https://www.researchgate.net/publication/348245919_Effect_of_Active_Camber_on_Rotor_Noise_Power_and_Hub_Vibration)
 * **[PSU_WOPWOP](PSU_WOPWOP)** contains scipts for generating and verification of PSU_WOPWOP input files. 
 * **[SONATA](SONATA)** contains the relevant code within HeliNoise for communicating with the general multidisciplinary optimization toolbox [SONATA](https://gitlab.lrz.de/HTMWTUM/SONATA)
-* **[TecPlot](TecPlot)** contains scripts that utilise pytecplot installation to generate `*.plt` files of the blade surface deformation or view acoustic output results from PSU-WOPWOP within TecPlot. 
+* **[TecPlot](TecPlot)** contains scripts that utilise pytecplot installation to generate `*.plt` files of the blade surface deformation or view acoustic output results from PSU-WOPWOP within TecPlot. A TecPlot installation is required to use them, otherwise the relevant parts of the scripts can be commented out.
 
 
 
