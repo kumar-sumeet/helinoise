@@ -287,7 +287,7 @@ def runwopwop(datadir_mdl_filename):
 if __name__=='__main__':
     starttime = time.time()
 
-    wopwop_datapath = '/home/HT/ge56beh/Work/HeliNoise/Data/Diss_runs' 
+    wopwop_datapath = './Data' 
     periodicOraperiodic = 'periodic' #aperiodic or periodic
     coarse_fine = 2 #chordwise discretization, 0 -> coarse, 1->medium, 2-> fine
     generate_plt = True

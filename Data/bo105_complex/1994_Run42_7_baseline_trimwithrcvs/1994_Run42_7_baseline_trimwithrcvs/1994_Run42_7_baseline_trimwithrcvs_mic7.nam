@@ -78,8 +78,8 @@
 		/  
 			&ContainerIn
 			  title            = 'Main Rotor Blade 1'
-			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade1_periodic.dat'
-			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade1_periodic.dat'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_patchdataBlade1_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_funcdataBlade1_periodic.dat'
 			  nbBase  = 2   
 			/
 				 &CB
@@ -96,8 +96,8 @@
 				  /
 			&ContainerIn
 			  title            = 'Main Rotor Blade 2'
-			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade2_periodic.dat'
-			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade2_periodic.dat'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_patchdataBlade2_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_funcdataBlade2_periodic.dat'
 			  nbBase=2
 			/
 				 &CB
@@ -114,8 +114,8 @@
 				  /
 			&ContainerIn
 			  title            = 'Main Rotor Blade 3'
-			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade3_periodic.dat'
-			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade3_periodic.dat'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_patchdataBlade3_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_funcdataBlade3_periodic.dat'
 			  nbBase=2
 			/
 				 &CB
@@ -132,8 +132,8 @@
 				  /
 			&ContainerIn
 			  title            = 'Main Rotor Blade 4'
-			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_patchdataBlade4_periodic.dat'
-			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimPawanwithrcvs2_BladePrecone(rotating)_funcdataBlade4_periodic.dat'
+			  patchGeometryFile= 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_patchdataBlade4_periodic.dat'
+			  patchLoadingFile = 'blade_data/1994_Run42_7_baseline_trimwithrcvs_BladePrecone(rotating)_funcdataBlade4_periodic.dat'
 			  nbBase=2
 			/
 				 &CB
